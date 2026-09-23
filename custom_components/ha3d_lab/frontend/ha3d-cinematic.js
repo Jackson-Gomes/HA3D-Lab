@@ -1,5 +1,5 @@
 import * as THREE from "https://esm.sh/three@0.180.0";
-import "./ha3d-lab-panel.js";
+import "./ha3d-panel.js";
 
 const CINEMATIC_KEY = "ha3d_lab_cinematic_enabled_v1";
 const Panel = customElements.get("ha3d-lab-panel");

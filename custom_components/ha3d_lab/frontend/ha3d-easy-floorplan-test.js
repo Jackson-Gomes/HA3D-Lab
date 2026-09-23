@@ -70,7 +70,8 @@ if (!proto.__ha3dEasyFloorplanTestV1) {
     this._transformControls = new TransformControls(this._camera, this._renderer.domElement);
     this._transformControls.enabled = false;
     this._transformControls.visible = false;
-    this._scene.add(this._transformControls);
+    // Three r180 exposes the renderable gizmo separately from the controller.
+    this._scene.add(this._transformControls.getHelper());
     this._transformControls.addEventListener("dragging-changed", (event) => { this._controls.enabled = !event.value; });
     this._transformControls.addEventListener("mouseUp", () => this._persistSelectedTransform());
     return result;

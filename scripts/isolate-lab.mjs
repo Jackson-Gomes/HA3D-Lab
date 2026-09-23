@@ -17,6 +17,7 @@ function visit(dir) {
       .replaceAll('custom_components/ha3d"', 'custom_components/ha3d_lab"')
       .replaceAll('custom_components/ha3d\n', 'custom_components/ha3d_lab\n')
       .replaceAll('ha3d-panel', 'ha3d-lab-panel')
+      .replaceAll('ha3d-lab-panel.js', 'ha3d-panel.js')
       .replaceAll('ha3d_static', 'ha3d_lab_static')
       .replace(/(["'`/])ha3d\//g, '$1ha3d_lab/')
       .replaceAll('api:ha3d:', 'api:ha3d_lab:')
