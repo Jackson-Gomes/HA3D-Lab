@@ -20,7 +20,7 @@ function visit(dir) {
       .replaceAll('ha3d_static', 'ha3d_lab_static')
       .replace(/(["'`/])ha3d\//g, '$1ha3d_lab/')
       .replaceAll('api:ha3d:', 'api:ha3d_lab:')
-      .replace(/(["'])ha3d_((?!lab_)[\w])/g, '$1ha3d_lab_$2')
+      .replace(/(["'])ha3d_((?!lab(?:_|\/))[\w])/g, '$1ha3d_lab_$2')
       .replace(/(["'])ha3d\1/g, '$1ha3d_lab$1');
     if (after !== before) writeFileSync(file, after);
   }

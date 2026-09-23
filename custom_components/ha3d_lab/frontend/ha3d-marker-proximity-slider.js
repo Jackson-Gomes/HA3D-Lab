@@ -75,7 +75,7 @@ async function persistSlider(panel, entityId, factor) {
   if (!entityId) return;
   const current = { ...(panel?._config?.marker_proximity || {}) };
   current[entityId] = clamp(factor);
-  const result = await panel._hass.callApi("POST", "ha3d_lab_lab/marker_proximity", { marker_proximity: current });
+  const result = await panel._hass.callApi("POST", "ha3d_lab/marker_proximity", { marker_proximity: current });
   panel._config = { ...(panel._config || {}), marker_proximity: result?.marker_proximity || current };
 }
 

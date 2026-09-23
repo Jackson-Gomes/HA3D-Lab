@@ -218,7 +218,7 @@ class HA3DPanel extends HTMLElement {
   async _loadConfig() {
     try {
       this._setStatus("Lendo configuração…");
-      this._config = await this._hass.callApi("GET", "ha3d_lab_lab/config");
+      this._config = await this._hass.callApi("GET", "ha3d_lab/config");
       if (this._config?.model_url) await this._loadModel(this._versionedModelUrl(this._config.model_url, this._config.model_revision));
       else {
         this._showEmpty(true);

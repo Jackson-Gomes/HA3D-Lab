@@ -71,7 +71,7 @@ function nextId(panel, type) {
 }
 
 async function saveWidgets(panel, list, status = null) {
-  panel._config = await panel._hass.callApi("POST", "ha3d_lab_lab/floating_widgets", { floating_widgets: list });
+  panel._config = await panel._hass.callApi("POST", "ha3d_lab/floating_widgets", { floating_widgets: list });
   if (status) panel._setStatus?.(status);
   refreshChooser(panel);
   return panel._config;

@@ -12,7 +12,7 @@ if (!proto.__ha3dVirtualLightsApiAdapterV1) {
       && Object.prototype.hasOwnProperty.call(patch, "virtual_lights")
       && Object.keys(patch).length === 1
     ) {
-      this._config = await this._hass.callApi("POST", "ha3d_lab_lab/virtual_lights", patch);
+      this._config = await this._hass.callApi("POST", "ha3d_lab/virtual_lights", patch);
       return this._config;
     }
     return oldSaveConfigPatch?.call(this, patch);

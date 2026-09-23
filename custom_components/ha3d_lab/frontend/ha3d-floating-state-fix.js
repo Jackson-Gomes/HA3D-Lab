@@ -22,7 +22,7 @@ function patchRuntime(panel, item) {
 }
 
 async function persistWidgets(panel, list) {
-  const result = await panel._hass?.callApi?.("POST", "ha3d_lab_lab/floating_widgets", { floating_widgets: list });
+  const result = await panel._hass?.callApi?.("POST", "ha3d_lab/floating_widgets", { floating_widgets: list });
   if (result) panel._config = result;
   return result;
 }

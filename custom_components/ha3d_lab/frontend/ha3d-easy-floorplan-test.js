@@ -124,7 +124,7 @@ if (!proto.__ha3dEasyFloorplanTestV1) {
     const advanced = this._config?.advanced_bindings?.[name] || {};
     const area = this._config?.area_bindings?.[name] || "";
     if (!this._areaData) {
-      try { this._areaData = (await this._hass.callApi("GET", "ha3d_lab_lab/areas")).areas || []; } catch (_error) { this._areaData = []; }
+      try { this._areaData = (await this._hass.callApi("GET", "ha3d_lab/areas")).areas || []; } catch (_error) { this._areaData = []; }
     }
     const options = [`<option value="">Nenhuma</option>`, ...this._areaData.map((item) => `<option value="${escapeHtml(item.id)}" ${item.id === area ? "selected" : ""}>${escapeHtml(item.name)}</option>`)].join("");
     const selectedEntity = advanced.entity_id || object.userData?.ha3dEntityId || "";
@@ -147,7 +147,7 @@ if (!proto.__ha3dEasyFloorplanTestV1) {
     // HA's current callApi contract sends POST JSON in its third argument.
     // Passing it as a fourth argument silently drops the body, leaving the
     // server unable to validate or persist editor/robot settings.
-    this._config = await this._hass.callApi("POST", "ha3d_lab_lab/config", patch);
+    this._config = await this._hass.callApi("POST", "ha3d_lab/config", patch);
   };
 
   proto._updateEntityChoices = function (areaId = "") {

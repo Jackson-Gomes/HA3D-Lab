@@ -79,7 +79,7 @@ async function saveAlias(panel, entityId, alias) {
   else delete next[entityId];
 
   try {
-    const result = await panel._hass.callApi("POST", "ha3d_lab_lab/entity_aliases", { entity_aliases: next });
+    const result = await panel._hass.callApi("POST", "ha3d_lab/entity_aliases", { entity_aliases: next });
     panel._config = { ...(panel._config || {}), entity_aliases: result?.entity_aliases || next };
     refreshAliases(panel);
     panel._setStatus?.(clean ? `Nome no HA3D salvo: ${clean}` : `Nome HA3D removido: ${entityId}`);

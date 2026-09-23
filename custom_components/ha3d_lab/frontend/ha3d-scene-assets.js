@@ -49,7 +49,7 @@ function mutableAssets(panel, overrideId = null, override = null) {
 }
 
 async function saveAssets(panel, assets, status = null) {
-  panel._config = await panel._hass.callApi("POST", "ha3d_lab_lab/scene_assets", { scene_assets: assets });
+  panel._config = await panel._hass.callApi("POST", "ha3d_lab/scene_assets", { scene_assets: assets });
   if (status) panel._setStatus?.(status);
   refreshAssetChooser(panel);
   return panel._config;
