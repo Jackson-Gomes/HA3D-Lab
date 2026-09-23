@@ -6,7 +6,7 @@ import re
 from typing import Any
 import unittest
 
-source = Path(__file__).resolve().parents[1] / "custom_components/ha3d/http.py"
+source = Path(__file__).resolve().parents[1] / "custom_components/ha3d_lab/http.py"
 module = ast.parse(source.read_text(encoding="utf-8"))
 names = {"_is_entity_id", "_is_number", "_is_valid_robot"}
 functions = ast.Module(body=[node for node in module.body if isinstance(node, ast.FunctionDef) and node.name in names], type_ignores=[])

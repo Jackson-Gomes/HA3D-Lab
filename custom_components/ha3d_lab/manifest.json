@@ -1,0 +1,18 @@
+{
+  "domain": "ha3d_lab",
+  "name": "HA3D Lab",
+  "codeowners": [
+    "@Jackson-Gomes"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "frontend",
+    "http",
+    "panel_custom"
+  ],
+  "documentation": "https://github.com/Jackson-Gomes/HA3D-Lab",
+  "issue_tracker": "https://github.com/Jackson-Gomes/HA3D-Lab/issues",
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "version": "0.3.0-lab.1"
+}

@@ -4,7 +4,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 // Pure numerical regression tests; no Home Assistant connection or renderer.
-const source = readFileSync(new URL("../custom_components/ha3d/frontend/ha3d-robot-trackers.js", import.meta.url), "utf8");
+const source = readFileSync(new URL("../custom_components/ha3d_lab/frontend/ha3d-robot-trackers.js", import.meta.url), "utf8");
 class Vector3 { constructor(x = 0, y = 0, z = 0) { Object.assign(this, { x, y, z }); } }
 class Panel {}
 Panel.HA3D_THREE = { Vector3, MathUtils: { degToRad: (x) => x * Math.PI / 180 } };

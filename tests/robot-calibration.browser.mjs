@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const baseline = process.argv.includes("--baseline");
-const sourcePath = "custom_components/ha3d/frontend/ha3d-robot-trackers.js";
+const sourcePath = "custom_components/ha3d_lab/frontend/ha3d-robot-trackers.js";
 const source = baseline ? execFileSync("git", ["show", `9659b17:${sourcePath}`], { cwd: root, encoding: "utf8" }) : readFileSync(path.join(root, sourcePath), "utf8");
 const hash = createHash("sha256").update(source).digest("hex");
 const output = path.join(root, "test-results", baseline ? "baseline" : "candidate"); mkdirSync(output, { recursive: true });
@@ -28,9 +28,9 @@ class Panel extends HTMLElement {
   _renderShell(){ this.shadowRoot.innerHTML='<style>:host{display:block}#root{position:relative;height:100vh;overflow:hidden}#actions{position:absolute;top:12px;right:12px;z-index:50}.glass{background:#222;color:#eee}button{background:#007b9d;color:white;border:0;border-radius:8px;padding:8px;cursor:pointer}button:disabled{opacity:.4}input,select{font:inherit}#status{position:absolute;left:10px;top:10px}</style><div id="root"><div id="actions"></div><div id="status"></div></div>'; }
   _loadModel(){} _loadConfig(){} _updateLightMarkers(){} _persistSelectedTransform(){}
   _setStatus(text){ this.shadowRoot.querySelector('#status').textContent=text; }
-  async _saveConfigPatch(patch){ this._config=await this._hass.callApi('POST','ha3d/config',patch); }
+  async _saveConfigPatch(patch){ this._config=await this._hass.callApi('POST','ha3d_lab_lab/config',patch); }
 }
-Panel.HA3D_THREE=THREE; customElements.define('ha3d-panel',Panel); await import('/robots.js');
+Panel.HA3D_THREE=THREE; customElements.define('ha3d-lab-panel',Panel); await import('/robots.js');
 const app=new Panel(); document.body.append(app); window.app=app; app._renderShell();
 app._scene=new THREE.Scene(); app._camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,.01,1000); app._camera.position.set(4,12,12);
 app._renderer=new THREE.WebGLRenderer({antialias:true}); app._renderer.setSize(innerWidth,innerHeight); app.shadowRoot.querySelector('#root').prepend(app._renderer.domElement);
@@ -38,7 +38,7 @@ app._controls=new OrbitControls(app._camera,app._renderer.domElement); app._cont
 app._transformControls={detach(){this.object=null},enabled:false,visible:false};
 app._model=new THREE.Mesh(new THREE.BoxGeometry(12,.05,12),new THREE.MeshBasicMaterial({color:0x333b43})); app._model.position.set(3,-.025,3); app._scene.add(app._model); app._scene.add(new THREE.AmbientLight(0xffffff,3));
 window.bump=(x,y,state='paused',age=0)=>{app._hass.states={'sensor.xiaomi_robot_vacuum_h50_vacuum_position':{state:JSON.stringify({x,y,a:0}),attributes:{friendly_name:'Xiaomi H50 position'},last_updated:new Date(Date.now()-age).toISOString()},'vacuum.xiaomi_us_1213069013_ov43gb':{state,attributes:{friendly_name:'Xiaomi H50'}}};app._updateRobots();};
-app._hass={states:{},async callApi(method,url,data){if(method!=='POST'||url!=='ha3d/config')throw Error('Unsupported API');const res=await fetch('/api/ha3d/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const body=await res.json();if(!res.ok)throw body;return body;},async callService(domain,service,data,target){window.serviceIntents.push({domain,service,data,target});}};
+app._hass={states:{},async callApi(method,url,data){if(method!=='POST'||url!=='ha3d_lab_lab/config')throw Error('Unsupported API');const res=await fetch('/api/ha3d_lab/config',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const body=await res.json();if(!res.ok)throw body;return body;},async callService(domain,service,data,target){window.serviceIntents.push({domain,service,data,target});}};
 app._config=await (await fetch('/seed')).json(); bump(1000,2000); app._rebuildRobots();
 app.shadowRoot.querySelector('#robotsButton').click(); window.ready=true;
 function frame(){app._updateLightMarkers();app._renderer.render(app._scene,app._camera);requestAnimationFrame(frame)} frame();
@@ -59,7 +59,7 @@ await context.route("**/*", async (route) => {
   if(request.method()==="GET"&&url.pathname==="/")return route.fulfill({contentType:"text/html",body:fixture,headers:{"Content-Security-Policy":"default-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'; img-src 'self' data:; worker-src 'none'; frame-src 'none'; form-action 'none'"}});
   if(request.method()==="GET"&&resources.has(url.pathname))return route.fulfill({contentType:"text/javascript",body:resources.get(url.pathname)});
   if(request.method()==="GET"&&url.pathname==="/seed")return route.fulfill({json:store});
-  if(request.method()==="POST"&&url.pathname==="/api/ha3d/config"){
+  if(request.method()==="POST"&&url.pathname==="/api/ha3d_lab/config"){
     const body=request.postDataJSON();intents.push(structuredClone(body));
     if(delayNext){delayNext=false;await new Promise(resolve=>{releaseSave=resolve});}
     if(failNext){failNext=false;return route.fulfill({status:500,json:{error:"simulated_failure"}});}

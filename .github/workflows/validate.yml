@@ -24,19 +24,19 @@ jobs:
           import json
           from pathlib import Path
 
-          for path in [Path("hacs.json"), *Path("custom_components/ha3d").rglob("*.json")]:
+          for path in [Path("hacs.json"), *Path("custom_components/ha3d_lab").rglob("*.json")]:
               json.loads(path.read_text(encoding="utf-8"))
               print(f"ok {path}")
 
-          manifest = json.loads(Path("custom_components/ha3d/manifest.json").read_text(encoding="utf-8"))
+          manifest = json.loads(Path("custom_components/ha3d_lab/manifest.json").read_text(encoding="utf-8"))
           required = {"domain", "documentation", "issue_tracker", "codeowners", "name", "version"}
           missing = sorted(required - manifest.keys())
           if missing:
               raise SystemExit(f"manifest missing required HACS keys: {missing}")
 
-          brand = Path("custom_components/ha3d/brand/icon.png")
+          brand = Path("custom_components/ha3d_lab/brand/icon.png")
           if not brand.is_file():
-              raise SystemExit("missing custom_components/ha3d/brand/icon.png")
+              raise SystemExit("missing custom_components/ha3d_lab/brand/icon.png")
           print(f"ok {brand}")
           PY
       - name: Check frontend syntax
