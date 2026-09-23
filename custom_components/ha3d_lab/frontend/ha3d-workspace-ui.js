@@ -22,7 +22,8 @@ function install(panel) {
     #root[data-lab-mode=views] #viewsPanel,#root[data-lab-mode=system] #viewsPanel{display:block!important}
     #root[data-lab-robots=open] #viewsPanel{display:none!important}
     #root[data-lab-mode=views] #graphicsSection,#root[data-lab-mode=views] #globalLightSection{display:none!important}
-    #root[data-lab-mode=system] #viewsPanel>:not(#graphicsSection):not(#globalLightSection){display:none!important}
+    #root[data-lab-mode=system] #viewsPanel>:not(#graphicsSection):not(#globalLightSection):not(#labMotionSettings){display:none!important}
+    #root:not([data-lab-mode=system]) #labMotionSettings{display:none!important}
     #root:not([data-lab-mode=system]) #ha3dRobots{display:none!important}
     #root:not([data-lab-mode=edit]):not([data-lab-mode=buy]) #ha3dEditor{display:none!important}
     #labBuild{display:none;position:absolute;top:126px;left:12px;z-index:40;width:min(360px,calc(100vw - 24px));padding:18px;border-radius:16px;background:#17232a;border:1px solid #ffffff24}

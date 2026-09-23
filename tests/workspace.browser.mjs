@@ -41,7 +41,7 @@ const seed = () => ({model_url:'/local/ha3d_lab/models/model.glb',model_revision
 const browser = await chromium.launch({ headless:true, ...(process.platform === 'win32' ? {channel:'msedge'} : {}) });
 const results=[];
 for (const profile of [{name:'desktop',width:1440,height:900},{name:'phone',width:390,height:844}]) {
-  let store=seed();const blocked=[],errors=[],consoleErrors=[],intents=[];
+  let store=seed(), failNext=false;const blocked=[],errors=[],consoleErrors=[],intents=[];
   const context=await browser.newContext({viewport:{width:profile.width,height:profile.height},serviceWorkers:'block'});
   await context.addInitScript(()=>{
     window.blockedTransports=[];
@@ -63,7 +63,7 @@ for (const profile of [{name:'desktop',width:1440,height:900},{name:'phone',widt
       if(url.pathname==='/api/ha3d_lab/areas')return route.fulfill({json:{areas:[]}});
     }
     if(req.method()==='POST'&&url.pathname==='/api/ha3d_lab/config'){
-      intents.push(req.postDataJSON());store={...store,...req.postDataJSON()};return route.fulfill({json:store});
+      intents.push(req.postDataJSON());if(failNext){failNext=false;return route.fulfill({status:500,json:{error:'simulated_failure'}})}store={...store,...req.postDataJSON()};return route.fulfill({json:store});
     }
     blocked.push(req.url());return route.abort();
   });
@@ -89,6 +89,17 @@ for (const profile of [{name:'desktop',width:1440,height:900},{name:'phone',widt
       await page.locator('[data-ha3d-transform=px]').fill('3');await page.locator('#ha3dApplyPreciseTransform').click();
       await page.waitForFunction(()=>app._config.object_positions.Chair?.position[0]===3);
       assert.equal(store.object_positions.Chair.position[0],3);assert.equal(intents.length,1);
+    });
+    await check('history_undo_failure_retry_redo',async()=>{
+      failNext=true;await page.locator('#labUndo').click();await page.waitForFunction(()=>app.shadowRoot.querySelector('#status').textContent.includes('Não foi possível'));
+      assert.equal(store.object_positions.Chair.position[0],3);
+      await page.locator('#labUndo').click();await page.waitForFunction(()=>!app._config.object_positions.Chair);
+      assert.equal(await page.evaluate(()=>app._model.getObjectByName('Chair').position.x),2);
+      await page.locator('#labRedo').click();await page.waitForFunction(()=>app._config.object_positions.Chair?.position[0]===3);
+      assert.equal(await page.evaluate(()=>app._model.getObjectByName('Chair').position.x),3);
+      // The expected HTTP 500 is kept separate from unexpected runtime failures.
+      assert.equal(consoleErrors.filter(x=>x.includes('500')).length,1);
+      consoleErrors.splice(consoleErrors.findIndex(x=>x.includes('500')),1);
     });
     await check('mode_navigation',async()=>{
       for(const mode of ['build','buy','views','system','live']){
