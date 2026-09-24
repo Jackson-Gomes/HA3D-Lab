@@ -2,12 +2,12 @@
   "config": {
     "step": {
       "user": {
-        "title": "HA3D",
-        "description": "Install the HA3D panel. After setup, open HA3D in the sidebar and upload a GLB model."
+        "title": "HA3D Lab",
+        "description": "Install the HA3D Lab panel. After setup, open HA3D Lab in the sidebar and upload a GLB model."
       }
     },
     "abort": {
-      "single_instance_allowed": "Only one HA3D instance can be configured."
+      "single_instance_allowed": "Only one HA3D Lab instance can be configured."
     }
   }
 }

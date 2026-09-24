@@ -2,12 +2,12 @@
   "config": {
     "step": {
       "user": {
-        "title": "HA3D",
-        "description": "Instale o painel HA3D. Depois, abra HA3D na barra lateral e envie um modelo GLB."
+        "title": "HA3D Lab",
+        "description": "Instale o painel HA3D Lab. Depois, abra HA3D Lab na barra lateral e envie um modelo GLB."
       }
     },
     "abort": {
-      "single_instance_allowed": "Somente uma instância do HA3D pode ser configurada."
+      "single_instance_allowed": "Somente uma instância do HA3D Lab pode ser configurada."
     }
   }
 }
